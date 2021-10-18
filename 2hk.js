@@ -94,8 +94,40 @@ function questionSolver(page,question,answer){
      //click on question 
         let qWillBeClickedpromise = question.click();
 
-        qWillBeClickedpromise.then(function() {
-            //focus on editor
+        qWillBeClickedpromise
+        //click
+        //code type
+        //ctrl A + ctrl x
+        //click on editor
+        // ctrl A + ctrl v
+        .then(function() {
+            let waitorEditorToBeInFocus = WaitAndClick(".monaco-editor.no-user-select.vs",page);
+            return waitorEditorToBeInFocus;
+            })
+
+        
+        .then(function(){
+            //wait for selector
+            return WaitAndClick(".checkbox-input", page);
+            
+        }).then(function(){
+           return  page.waitForSelector("textarea.custominput " , {visible : true});
+        })
+        .then(function(){
+            return page.type("textarea.custominput" , answer , {delay : 50});
+        }).then(function(){
+            return page.keyboard.down("Control");
+        }).then(function(){
+            return  page.keyboard.press("A", {delay : 100});
+        }).then(function(){
+            return page.keyboard.press("X", {delay : 100});
+        }).then(function(){
+            return page.keyboard.up("Control");
+        })
+        
+        //focus on editor
+    
+        .then(function() {
         let waitorEditorToBeInFocus = WaitAndClick(".monaco-editor.no-user-select.vs",page);
         return waitorEditorToBeInFocus;
         }).then(function() {
@@ -109,17 +141,19 @@ function questionSolver(page,question,answer){
 
         }).then(function() {
 
-            return page.keyboard.press("X" , {delay : 100});
+            return page.keyboard.press("V" , {delay : 100});
         }).then(function() {
             let CtrlIsPressedP = page.keyboard.up("Control");
             return CtrlIsPressedP;
+        }).then(function(){
+            return page.click(".hr-monaco__run-code" , {delay : 50});
         })
         //code typing:
-        .then(function(){
-            // fail due to autocomplete feature of vs code -> monaco-editor
-            return page.keyboard.type(answer, {delay : 50});
+        // .then(function(){
+        //     // fail due to autocomplete feature of vs code -> monaco-editor
+        //     return page.keyboard.type(answer, {delay : 50});
 
-        })
+        // })
         
         
         
